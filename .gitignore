@@ -24,3 +24,5 @@
 /.vs/wakey.slnx/v18
 /.vs
 /wakey/wakey (Package)/wakey (Package).assets.cache
+*.pfx
+/wakey/wakey/Generated Files/XamlBindingInfo.xaml.g.h
