@@ -73,9 +73,10 @@
     <AppxBundlePlatforms>x86|x64|arm64</AppxBundlePlatforms>
     <AppInstallerUri>c:\</AppInstallerUri>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>D0FD6E1512262D7D8EBA22A3CA30B2B16B66DC3A</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>10B699147F1597EB894190E4964999AFFE1637C1</PackageCertificateThumbprint>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
     <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+    <PackageCertificateKeyFile>wakey %28Package%29_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_MsStore|x86'">
     <AppxBundle>Always</AppxBundle>
@@ -165,6 +166,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="wakey %28Package%29_TemporaryKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Images\BadgeLogo.scale-100.png" />
     <Content Include="Images\BadgeLogo.scale-125.png" />

@@ -9,11 +9,12 @@
   xmlns:desktop6="http://schemas.microsoft.com/appx/manifest/desktop/windows10/6"
   xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
   xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
-  IgnorableNamespaces="uap3 uap rescap"> 
+  xmlns:uap18="http://schemas.microsoft.com/appx/manifest/uap/windows10/18"
+  IgnorableNamespaces="uap3 uap rescap uap18"> 
   <Identity
-    Name="ArmenHakobyan.37146BC221925"
-    Publisher="CN=48ADDF26-3680-43EB-B968-D1B3F8E30B15"
-    Version="3.0.56.0" />
+    Name="Wakey"
+    Publisher="CN=Armen Hakobyan"
+    Version="4.0.1.0" />
   <mp:PhoneIdentity PhoneProductId="a056dc87-9de6-4708-90e3-8ed3966ddc14" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
   <Properties>
     <DisplayName>Wakey</DisplayName>
@@ -31,7 +32,7 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="$targetentrypoint$">
+      EntryPoint="$targetentrypoint$" uap18:RuntimeBehavior="windowsApp">
       <uap:VisualElements
         DisplayName="ms-resource:resAppTitle"
         Description="Application description"
