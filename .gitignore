@@ -21,3 +21,6 @@
 /wakey/wakey/ARM64/Release_MsStore
 /wakey/wakey/x64/Debug_SideLoad
 /x64/Debug_SideLoad/wakey
+/.vs/wakey.slnx/v18
+/.vs
+/wakey/wakey (Package)/wakey (Package).assets.cache
