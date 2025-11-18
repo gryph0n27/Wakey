@@ -475,9 +475,9 @@ namespace winrt::wakey::implementation
 
             PMINMAXINFO pMinMaxInfo = (PMINMAXINFO)lParam;
 
-            pMinMaxInfo->ptMinTrackSize.x = 800 * uScalingFactor;
+            pMinMaxInfo->ptMinTrackSize.x = 600 * uScalingFactor;
         //  pMinMaxInfo->ptMaxTrackSize.x = 800 * uScalingFactor;
-            pMinMaxInfo->ptMinTrackSize.y = 600 * uScalingFactor;
+            pMinMaxInfo->ptMinTrackSize.y = 400 * uScalingFactor;
         //  pMinMaxInfo->ptMaxTrackSize.y = 600 * uScalingFactor;
 
             return FALSE;

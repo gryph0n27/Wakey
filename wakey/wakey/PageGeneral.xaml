@@ -51,33 +51,10 @@
                                 <FontIcon Glyph="&#xF570;" x:Name="fntIcoTheme"/>
                             </angel:SettingsCard.HeaderIcon>
                             <ComboBox SelectedIndex="0" MinWidth="150" x:Name="cboTheme" SelectionChanged="cboThemeSelChanged">
-                                <x:String>System default</x:String>                                
+                                <x:String>System default</x:String>
                                 <x:String>Light</x:String>
                                 <x:String>Dark</x:String>
                             </ComboBox>
-                        </angel:SettingsCard>                        
-                    </StackPanel>
-                </angel:SettingsExpander.ExpanderContent>
-            </angel:SettingsExpander>
-            <TextBlock x:Name="txtRunAsAdmin" x:Uid="resGeneralRunAsTb" Margin="13, 20, 13, 0" Text="X" Style="{StaticResource SettingsSubHeaderBlockStyle}" />
-            <angel:SettingsExpander x:Name="steRunAsAdmin" x:Uid="resGeneralRunAsSte" Margin="10" Header="X" Description="X" IsExpanded="True">
-                <angel:SettingsExpander.ExpanderContent>
-                    <StackPanel>
-                        <angel:SettingsCard x:Name="stcRunAsAdmin" x:Uid="resGeneralRunAsStc" Header="X" Description="X">
-                            <angel:SettingsCard.HeaderIcon>
-                                <FontIcon x:Name="fntIcoAdmin" Glyph="&#xE83D;"/>
-                            </angel:SettingsCard.HeaderIcon>
-                            <Button Content="Run As Admin" MinWidth="150" x:Name="btnRunAsAdmin" Click="btnRunAsAdminClicked"></Button>
-                        </angel:SettingsCard>
-                        <angel:SettingsCard x:Name="stcRunAsAdminAlways" x:Uid="resGeneralRunAsAlwaysStc" Header="X" Description="X">
-                            <angel:SettingsCard.HeaderIcon>
-                                <FontIcon Glyph="&#xE7EF;"/>
-                            </angel:SettingsCard.HeaderIcon>
-                            <StackPanel Orientation = "Horizontal">
-                                <FontIcon x:Name="fntIcoAdminAlways" Glyph="&#xE83D;"/>
-                                <ToggleSwitch Margin="10,0,10,0" OffContent="Off" OnContent="On" MinHeight="0" MinWidth="0" x:Name="tglRunAsAdminAlways" Toggled="tglRunAsAdminAlwaysOnToggled" IsEnabled="False">
-                                </ToggleSwitch>
-                            </StackPanel>
                         </angel:SettingsCard>
                     </StackPanel>
                 </angel:SettingsExpander.ExpanderContent>

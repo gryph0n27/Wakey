@@ -73,53 +73,7 @@ namespace winrt::wakey::implementation
                 fntIcoNotifications().Glyph(GLYPH_NOTIFY_OFF);
 
             AutorunGetFAF();
-            if (Program::IsRunAsAdmin())
-            {
-                fntIcoAdmin().Glyph(GLYPH_RUNASADMIN_ON);
-                stcRunAsAdmin().IsEnabled(false);
-            }
-            else
-            {
-                fntIcoAdmin().Glyph(GLYPH_RUNASADMIN_OFF);
-                stcRunAsAdmin().IsEnabled(true);
-            }
-
-            if (Settings::Get(Settings::SideLoaded, false))
-            {
-                txtRunAsAdmin().Visibility(
-                    winrt::Microsoft::UI::Xaml::Visibility::Visible
-                );
-                steRunAsAdmin().Visibility(
-                    winrt::Microsoft::UI::Xaml::Visibility::Visible
-                );
-
-                if (Program::IsRunAsAdmin())
-                {
-                    fntIcoAdminAlways  ().Glyph(GLYPH_RUNASADMIN_ON);
-                    stcRunAsAdminAlways().IsEnabled(true);
-                    tglRunAsAdminAlways().IsEnabled(true);
-                    tglRunAsAdminAlways().IsOn(
-                        Settings::Get(Settings::RunAsAdminAlways, false)
-                    );
-                }
-                else
-                {
-                    tglRunAsAdminAlways().IsEnabled(false);
-                    tglRunAsAdminAlways().IsOn(false);
-                    fntIcoAdminAlways  ().Glyph(GLYPH_RUNASADMIN_OFF);
-                    stcRunAsAdminAlways().IsEnabled(false);
-                }
-            }
-            else
-            {
-                txtRunAsAdmin().Visibility(
-                    winrt::Microsoft::UI::Xaml::Visibility::Collapsed
-                );
-                steRunAsAdmin().Visibility(
-                    winrt::Microsoft::UI::Xaml::Visibility::Collapsed
-                );
-            }
-
+            
             if (!txtHotKey().Text().empty())
                 fntIcoHotKey().Glyph(GLYPH_HOTKEY_ON);
             else
@@ -131,7 +85,7 @@ namespace winrt::wakey::implementation
                 fntIcoTheme().Glyph(GLYPH_THEME_OFF);
 
             m_bLoading = FALSE;
-        }        
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -143,44 +97,7 @@ namespace winrt::wakey::implementation
         UNREFERENCED_PARAMETER(args);
         if (!m_bLoading)
         {
-            if (Settings::Get(Settings::SideLoaded, false))
-            {
-                txtRunAsAdmin().Visibility(
-                    winrt::Microsoft::UI::Xaml::Visibility::Visible
-                );
-                steRunAsAdmin().Visibility(
-                    winrt::Microsoft::UI::Xaml::Visibility::Visible
-                );
-
-                if (Program::IsRunAsAdmin())
-                {
-                    stcRunAsAdmin().IsEnabled(false);
-                    fntIcoAdminAlways().Glyph(GLYPH_RUNASADMIN_ON);
-                    stcRunAsAdminAlways().IsEnabled(true);
-                    tglRunAsAdminAlways().IsEnabled(true);
-                    tglRunAsAdminAlways().IsOn(
-                        Settings::Get(Settings::RunAsAdminAlways, false)
-                    );
-                }
-                else
-                {
-                    stcRunAsAdmin().IsEnabled(true);
-                    tglRunAsAdminAlways().IsEnabled(false);
-                    tglRunAsAdminAlways().IsOn(false);
-                    fntIcoAdminAlways().Glyph(GLYPH_RUNASADMIN_OFF);
-                    stcRunAsAdminAlways().IsEnabled(false);
-                }
-            }
-            else
-            {
-                txtRunAsAdmin().Visibility(
-                    winrt::Microsoft::UI::Xaml::Visibility::Collapsed
-                );
-                steRunAsAdmin().Visibility(
-                    winrt::Microsoft::UI::Xaml::Visibility::Collapsed
-                );
-            }
-        }        
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -457,30 +374,6 @@ namespace winrt::wakey::implementation
         }
 
         prgAutorun().IsActive(false);
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////
-
-    VOID PageGeneral::tglRunAsAdminAlwaysOnToggled(
-        _In_::winrt::Windows::Foundation::IInspectable const& sender,
-        _In_::winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args
-    )
-    {
-        UNREFERENCED_PARAMETER(sender);
-        UNREFERENCED_PARAMETER(args);
-
-        if (!m_bLoading)
-        {
-            if (Settings::Get(Settings::SideLoaded, false))
-            {
-                if (Program::IsRunAsAdmin())
-                {
-                    Settings::Set(
-                        Settings::RunAsAdminAlways, tglRunAsAdminAlways().IsOn()
-                    );
-                }
-            }
-        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////

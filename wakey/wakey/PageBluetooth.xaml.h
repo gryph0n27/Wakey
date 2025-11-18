@@ -21,10 +21,8 @@ namespace winrt::wakey::implementation
         VOID btnLinkBluetoothClick  (_In_::winrt::Windows::Foundation::IInspectable const& sender, _In_::winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args);
         VOID btnDynamicLockClick    (_In_::winrt::Windows::Foundation::IInspectable const& sender, _In_::winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args);
         VOID listViewItemClick      (_In_::winrt::Windows::Foundation::IInspectable const& sender, _In_::winrt::Microsoft::UI::Xaml::Controls::ItemClickEventArgs const& args);
-        VOID tglDynamicLockOnToggled(_In_::winrt::Windows::Foundation::IInspectable const& sender, _In_::winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args);
         VOID btnBluetoothWinClick   (_In_::winrt::Windows::Foundation::IInspectable const& sender, _In_::winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args);
 
-        winrt::fire_and_forget MonitorDynamicLock       (VOID);
 
         winrt::fire_and_forget OnBluetoothStatusChanged (_In_ BluetoothStatus eBtStatus);
         winrt::fire_and_forget OnBluetoothDeviceChanged (_In_ winrt::hstring hstrId, _In_ BluetoothDeviceChange eBtDeviceChange);

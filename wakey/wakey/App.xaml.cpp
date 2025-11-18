@@ -136,54 +136,14 @@ namespace winrt::wakey::implementation
                     {
                         bRestart = TRUE;
                     }
-                    else if (!bRunAsOnce && !::StrCmpIW(pwszArgs, L"--runas"))
-                    {
-                        bRestart = TRUE;
-                    }
-                    else if (Settings::Get(Settings::SideLoaded, false))
-                    {
-                        if (!Program::IsRunAsAdmin())
-                        {
-                            if (bRunAsOnce || !::StrCmpIW(pwszArgs, L"--runasalways"))
-                            {                                
-                                HANDLE hAdminProc = Program::RunAsAdmin(L"--runas");
-                                if (hAdminProc)
-                                {
-                                    CloseHandle(hAdminProc);
-                                    Program::Exit();
-                                    return;
-                                }
-                                else
-                                {
-                                    bRestart   = TRUE;
-                                    bCancelUAC = TRUE;
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
         
-        // This check should go after previous block!!!
-
-        if (!bCancelUAC &&
-            Settings::Get(Settings::SideLoaded, false))
-        {
-            if (!Program::IsRunAsAdmin())
-            {
-                if (Settings::Get(Settings::RunAsAdminAlways, false))
-                {
-                    Program::Restart(window, L"--runasalways");
-                    return;
-                }
-            }
-        }
-
         // First run, show window:
 
         BOOL bActivateWnd = FALSE;
-        bool bFirstRun = Settings::Get(Settings::SettingType::FirstRun, true);        
+        bool bFirstRun = Settings::Get(Settings::SettingType::FirstRun, true);
         if (bFirstRun)
         {
             bActivateWnd = TRUE;
@@ -191,13 +151,7 @@ namespace winrt::wakey::implementation
                 Settings::SettingType::FirstRun, false
             );
         }
-        else if (bRestart || bRunAsOnce)
-            bActivateWnd = TRUE;
-        else if (Settings::Get(Settings::SettingType::SideLoaded, false))
-            bActivateWnd = FALSE;
-        else if(!Settings::Get(Settings::SettingType::Purchased, false))
-            bActivateWnd = TRUE;
-
+       
         // TODO:
         {
             Settings::Set(

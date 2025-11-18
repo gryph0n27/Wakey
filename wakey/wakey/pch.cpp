@@ -597,28 +597,6 @@ namespace winrt::wakey::implementation
 
     ///////////////////////////////////////////////////////////////////////////////
 
-    BOOL Misc::IsDynamicLockEnabled(void)
-    {
-        return Registry::GetValueHKCU_DWORD(
-            L"Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon",
-            L"EnableGoodbye",
-            0
-        );
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////
-
-    BOOL Misc::SetDynamicLockEnabled(_In_ BOOL bEnabled)
-    {
-        return Registry::SetValueHKCU_DWORD(
-            L"Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon",
-            L"EnableGoodbye",
-            bEnabled
-        );
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////
-
     BOOL Misc::GetWindowsVersion(
         _Inout_ POSVERSIONINFOEXW pOSVIX
     )
@@ -635,10 +613,10 @@ namespace winrt::wakey::implementation
         {
             typedef NTSTATUS(WINAPI* LPRTLGETVERSION)(PRTL_OSVERSIONINFOEXW);
 
-            LPRTLGETVERSION pRtlGetVersion =
+            LPRTLGETVERSION pfnRtlGetVersion =
                 (LPRTLGETVERSION)GetProcAddress(hNtdll, "RtlGetVersion");
 
-            if (pRtlGetVersion)
+            if (pfnRtlGetVersion)
             {
                 pOSVIX->dwOSVersionInfoSize = sizeof(RTL_OSVERSIONINFOEXW);
                 SecureZeroMemory(
@@ -646,7 +624,7 @@ namespace winrt::wakey::implementation
                     sizeof(RTL_OSVERSIONINFOEXW) - sizeof(pOSVIX->dwOSVersionInfoSize)
                 );
 
-                return pRtlGetVersion(pOSVIX) == ERROR_SUCCESS;
+                return pfnRtlGetVersion(pOSVIX) == ERROR_SUCCESS;
 
                 // Note: FreeLibrary is generally not necessary for ntdll.dll as it's
                 // loaded into every process and remains in memory for the lifetime

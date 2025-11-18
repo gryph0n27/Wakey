@@ -30,7 +30,7 @@ namespace winrt::wakey::implementation
         : m_bLoading(TRUE)
     {
         // Xaml objects should not call InitializeComponent during construction.
-        // See https://github.com/microsoft/cppwinrt/tree/master/nuget#initializecomponent     
+        // See https://github.com/microsoft/cppwinrt/tree/master/nuget#initializecomponent
         
         NavigationCacheMode(
             winrt::Microsoft::UI::Xaml::Navigation::NavigationCacheMode::Enabled

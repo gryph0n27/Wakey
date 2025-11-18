@@ -57,30 +57,6 @@
                     </StackPanel>
                 </angel:SettingsExpander.ExpanderContent>
             </angel:SettingsExpander>
-            <TextBlock Margin="13, 20, 13, 0" x:Uid="resBtDynamicLockTb" Text="X" Style="{StaticResource SettingsSubHeaderBlockStyle}" />
-            <angel:SettingsExpander Margin="10" x:Uid="resBtDynamicLockSte" Header="X" Description="X" IsExpanded="True">
-                <angel:SettingsExpander.ExpanderContent>
-                    <StackPanel>
-                        <angel:SettingsCard x:Uid="resBtDynamicLockDisStc" Header="X" Description="X" IsEnabled="False" x:Name="stcDynamicLock">
-                            <angel:SettingsCard.HeaderIcon>
-                                <FontIcon Glyph="&#xF439;"/>
-                            </angel:SettingsCard.HeaderIcon>
-                            <StackPanel Orientation = "Horizontal">
-                                <FontIcon Glyph="&#xE83D;" x:Name="fntIcoDynamicLock" />
-                                <ToggleSwitch Margin="10,0,10,0" OffContent="Off" OnContent="On" MinHeight="0" MinWidth="0" x:Name="tglDynamicLock" Toggled="tglDynamicLockOnToggled">
-                            </ToggleSwitch>
-                            </StackPanel>
-                        </angel:SettingsCard>
-                        <angel:SettingsCard x:Uid="resBtDynamicLockOpnStc" Header="X" Description="X" IsEnabled="False"  x:Name="stcDynamicLockWin">
-                            <angel:SettingsCard.HeaderIcon>
-                                <FontIcon Glyph="&#xE8A7;"/>
-                            </angel:SettingsCard.HeaderIcon>
-                            <Button x:Uid="resBtDynamicLockOpnBtn" Content="X" MinWidth="100" x:Name="btnDynamicLock" Click="btnDynamicLockClick">
-                            </Button>
-                        </angel:SettingsCard>
-                    </StackPanel>
-                </angel:SettingsExpander.ExpanderContent>
-            </angel:SettingsExpander>
             <TextBlock Margin="13, 20, 13, 0" x:Uid="resRelatedSettingsTb" Text="X" Style="{StaticResource SettingsSubHeaderBlockStyle}" />
             <ListView x:Name="listView"
                     IsItemClickEnabled="True"

@@ -16,8 +16,6 @@ using namespace ::winrt;
 #define GLYPH_PHONE_ON          L"\uEE65"
 #define GLYPH_LINK_ON           L"\uE72E"
 #define GLYPH_LINK_OFF          L"\uE785"
-#define GLYPH_RUNASADMIN_ON     L"\uEA18"
-#define GLYPH_RUNASADMIN_OFF    L"\uE83D"
 
 namespace winrt::wakey::implementation
 {
@@ -73,10 +71,9 @@ namespace winrt::wakey::implementation
                 cboLink          ().IsEnabled(true);
                 stcDynamicLink   ().IsEnabled(true);
                 stcNewDevice     ().IsEnabled(true);
-                stcDynamicLockWin().IsEnabled(true);
-                
+
                 tglBluetooth().IsOn(true);
-                
+
                 prgBluetooth().IsActive(
                     MainWindow::Get()->m_blueTooth->IsEnabled()
                 );
@@ -91,35 +88,12 @@ namespace winrt::wakey::implementation
                 cboLink          ().IsEnabled(false);
                 stcDynamicLink   ().IsEnabled(false);
                 stcNewDevice     ().IsEnabled(false);
-                stcDynamicLockWin().IsEnabled(false);
 
                 fntIcoLink().Glyph(GLYPH_LINK_OFF);
                 fntIcoDynamicLink().Glyph(GLYPH_PHONE_OFF);
 
                 prgBluetooth().IsActive(false);
                 tglBluetooth().IsOn(false);
-            }
-
-            tglDynamicLock().IsOn(!Misc::IsDynamicLockEnabled());
-            if (Settings::Get(Settings::SideLoaded, false))
-            {   
-                if (Program::IsRunAsAdmin())
-                {
-                    stcDynamicLock().IsEnabled(bBluetoothIsOn);
-                    fntIcoDynamicLock().Glyph(GLYPH_RUNASADMIN_ON);
-                }
-                else
-                {
-                    stcDynamicLock().IsEnabled(false);
-                    fntIcoDynamicLock().Glyph(GLYPH_RUNASADMIN_OFF);
-                }
-            }
-            else
-            {
-                stcDynamicLock().IsEnabled(false);
-                stcDynamicLock().Visibility(
-                    winrt::Microsoft::UI::Xaml::Visibility::Collapsed
-                );
             }
 
             m_etDevChng = MainWindow::Get()->m_blueTooth->OnDeviceChanged(
@@ -129,7 +103,6 @@ namespace winrt::wakey::implementation
                 { get_weak(), &PageBluetooth::OnBluetoothStatusChanged }
             );
 
-            MonitorDynamicLock();
             m_bLoading = FALSE;
         }
     }
@@ -153,27 +126,6 @@ namespace winrt::wakey::implementation
 
         if (!m_bLoading)
         {
-            if (Settings::Get(Settings::SideLoaded, false))
-            {
-                tglDynamicLock().IsOn(!Misc::IsDynamicLockEnabled());
-                if (Program::IsRunAsAdmin())
-                {
-                    stcDynamicLock().IsEnabled(tglBluetooth().IsOn());
-                    fntIcoDynamicLock().Glyph(GLYPH_RUNASADMIN_ON);
-                }
-                else
-                {
-                    stcDynamicLock().IsEnabled(false);
-                    fntIcoDynamicLock().Glyph(GLYPH_RUNASADMIN_OFF);
-                }
-            }
-            else
-            {
-                stcDynamicLock().IsEnabled(false);
-                stcDynamicLock().Visibility(
-                    winrt::Microsoft::UI::Xaml::Visibility::Collapsed
-                );
-            }
         }
     }
 
@@ -227,56 +179,6 @@ namespace winrt::wakey::implementation
         }
 
         co_return;
-    }
-    
-    ///////////////////////////////////////////////////////////////////////////////
-
-    winrt::fire_and_forget PageBluetooth::MonitorDynamicLock(VOID)
-    {
-        if (!Settings::Get(Settings::SideLoaded, false))
-            co_return;
-
-        winrt::apartment_context ui_thread;
-        winrt::weak_ref<PageBluetooth> pThisWeak = get_weak();
-
-        co_await winrt::resume_background();
-
-        HKEY   hKey   = NULL;
-        HANDLE hEvent = CreateEventW(NULL, TRUE, FALSE, NULL);
-
-        RegOpenKeyEx(
-            HKEY_CURRENT_USER,
-            L"Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon",
-            0,
-            KEY_NOTIFY,
-            &hKey
-        );
-
-        do
-        {
-            co_await winrt::resume_background();
-            RegNotifyChangeKeyValue(
-                hKey,
-                TRUE,
-                REG_NOTIFY_CHANGE_LAST_SET,
-                hEvent,
-                TRUE
-            );
-
-            co_await winrt::resume_on_signal(hEvent);
-            co_await ui_thread;
-
-            if (pThisWeak.get())
-            {
-                pThisWeak.get()->tglDynamicLock().IsOn(
-                    !Misc::IsDynamicLockEnabled()
-                );
-            }
-        }
-        while (TRUE);
-
-        CloseHandle(hEvent);
-        RegCloseKey(hKey);
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -429,19 +331,8 @@ namespace winrt::wakey::implementation
             //OnDeviceChangedHandler(winrt::hstring());
 
             bool bBluetoothIsOn = tglBluetooth().IsOn();
-            
-            stcDynamicLink().IsEnabled(bBluetoothIsOn);
-            stcNewDevice  ().IsEnabled(bBluetoothIsOn);
+            stcNewDevice().IsEnabled(bBluetoothIsOn);
 
-            if (Settings::Get(Settings::SideLoaded, false))
-            {
-                if (Program::IsRunAsAdmin())
-                {
-                    stcDynamicLock().IsEnabled(bBluetoothIsOn);
-                    fntIcoDynamicLock().Glyph(GLYPH_RUNASADMIN_ON);
-                }
-            }
-            stcDynamicLockWin().IsEnabled(bBluetoothIsOn);
             cboLink().SelectedItem(
                 winrt::box_value(s_hstrDevIdNone)
             );
@@ -465,26 +356,6 @@ namespace winrt::wakey::implementation
                 prgBluetooth().IsActive(false);
                 fntIcoLink().Glyph(GLYPH_LINK_OFF);
             }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////
-
-    VOID PageBluetooth::tglDynamicLockOnToggled(
-        _In_::winrt::Windows::Foundation::IInspectable const& sender,
-        _In_::winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args
-    )
-    {
-        UNREFERENCED_PARAMETER(sender);
-        UNREFERENCED_PARAMETER(args);
-
-        if (!m_bLoading &&
-            Program::IsRunAsAdmin() &&
-            Settings::Get(Settings::SideLoaded, false))
-        {
-            Misc::SetDynamicLockEnabled(
-                !tglDynamicLock().IsOn()
-            );
         }
     }
 

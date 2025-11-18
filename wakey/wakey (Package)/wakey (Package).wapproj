@@ -4,52 +4,28 @@
     <VisualStudioVersion>15.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug_SideLoad|x86">
-      <Configuration>Debug_SideLoad</Configuration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
       <Platform>x86</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug_SideLoad|x64">
-      <Configuration>Debug_SideLoad</Configuration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug_SideLoad|ARM64">
-      <Configuration>Debug_SideLoad</Configuration>
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
       <Platform>ARM64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug_MsStore|x86">
-      <Configuration>Debug_MsStore</Configuration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
       <Platform>x86</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug_MsStore|x64">
-      <Configuration>Debug_MsStore</Configuration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug_MsStore|ARM64">
-      <Configuration>Debug_MsStore</Configuration>
-      <Platform>ARM64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release_SideLoad|x86">
-      <Configuration>Release_SideLoad</Configuration>
-      <Platform>x86</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release_SideLoad|x64">
-      <Configuration>Release_SideLoad</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release_SideLoad|ARM64">
-      <Configuration>Release_SideLoad</Configuration>
-      <Platform>ARM64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release_MsStore|x86">
-      <Configuration>Release_MsStore</Configuration>
-      <Platform>x86</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release_MsStore|x64">
-      <Configuration>Release_MsStore</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release_MsStore|ARM64">
-      <Configuration>Release_MsStore</Configuration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
       <Platform>ARM64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -61,7 +37,7 @@
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
   <PropertyGroup>
     <ProjectGuid>17746cd3-0a6d-418c-8a06-891fcf809f44</ProjectGuid>
-    <TargetPlatformVersion>10.0.22621.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.26100.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
@@ -78,77 +54,41 @@
     <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
     <PackageCertificateKeyFile>wakey %28Package%29_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_MsStore|x86'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_MsStore|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_MsStore|ARM64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SideLoad|x86'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SideLoad|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SideLoad|ARM64'">
-    <AppxBundle>Always</AppxBundle>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_MsStore|x86'">
-    <AppxBundle>Always</AppxBundle>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_MsStore|x64'">
-    <AppxBundle>Always</AppxBundle>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_MsStore|ARM64'">
-    <AppxBundle>Always</AppxBundle>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_SideLoad|x86'">
-    <AppxBundle>Always</AppxBundle>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_SideLoad|x64'">
-    <AppxBundle>Always</AppxBundle>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_SideLoad|ARM64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
   <ItemGroup>
-    <AppxManifest Include="Package.MsStore.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Release_MsStore|x86'">
+    <AppxManifest Include="Package.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <AppxManifest Include="Package.MsStore.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Release_MsStore|x64'">
+    <AppxManifest Include="Package.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <AppxManifest Include="Package.MsStore.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Release_MsStore|ARM64'">
+    <AppxManifest Include="Package.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <AppxManifest Include="Package.MsStore.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Debug_MsStore|x86'">
+    <AppxManifest Include="Package.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <AppxManifest Include="Package.MsStore.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Debug_MsStore|x64'">
+    <AppxManifest Include="Package.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <AppxManifest Include="Package.MsStore.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Debug_MsStore|ARM64'">
-      <SubType>Designer</SubType>
-    </AppxManifest>
-    <AppxManifest Include="Package.SideLoad.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Release_SideLoad|x86'">
-      <SubType>Designer</SubType>
-    </AppxManifest>
-    <AppxManifest Include="Package.SideLoad.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Release_SideLoad|x64'">
-      <SubType>Designer</SubType>
-    </AppxManifest>
-    <AppxManifest Include="Package.SideLoad.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Release_SideLoad|ARM64'">
-      <SubType>Designer</SubType>
-    </AppxManifest>
-    <AppxManifest Include="Package.SideLoad.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Debug_SideLoad|x86'">
-      <SubType>Designer</SubType>
-    </AppxManifest>
-    <AppxManifest Include="Package.SideLoad.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Debug_SideLoad|x64'">
-      <SubType>Designer</SubType>
-    </AppxManifest>
-    <AppxManifest Include="Package.SideLoad.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Debug_SideLoad|ARM64'">
+    <AppxManifest Include="Package.appxmanifest" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
       <SubType>Designer</SubType>
     </AppxManifest>
   </ItemGroup>
