@@ -26,3 +26,5 @@
 /wakey/wakey (Package)/wakey (Package).assets.cache
 *.pfx
 /wakey/wakey/Generated Files/XamlBindingInfo.xaml.g.h
+/Debug_SideLoad/wakey
+/wakey/wakey/Debug_SideLoad
