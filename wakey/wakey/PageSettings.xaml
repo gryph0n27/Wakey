@@ -47,8 +47,8 @@
                     </StackPanel>
                 </angel:SettingsExpander.ExpanderContent>
             </angel:SettingsExpander>
-            <TextBlock Margin="13, 20, 13, 0" x:Uid="resSettingsPowerTb" Text="X" Style="{StaticResource SettingsSubHeaderBlockStyle}" />
-            <angel:SettingsExpander Margin="10" x:Uid="resSettingsPowerSte" Header="X" Description="X" IsExpanded="True">
+            <TextBlock Margin="13, 20, 13, 0" x:Name="txtSettingsPowerTb" x:Uid="resSettingsPowerTb" Text="X" Style="{StaticResource SettingsSubHeaderBlockStyle}" Visibility="Collapsed"/>
+            <angel:SettingsExpander Margin="10" x:Name="steSettingsPowerTb" x:Uid="resSettingsPowerSte" Header="X" Description="X" IsExpanded="True" Visibility="Collapsed">
                 <angel:SettingsExpander.ExpanderContent>
                     <StackPanel>
                         <angel:SettingsCard x:Uid="resSettingsPowerModeStc" Header="X" Description="X" IsEnabled="False" x:Name="stcPowerMode">

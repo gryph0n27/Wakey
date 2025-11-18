@@ -169,10 +169,11 @@ namespace winrt::wakey::implementation
 
     struct Misc
     {
-        static HICON    LoadIcon            (_In_ LPCWSTR lpwszFileName);
-        static HICON    LoadPngAsIcon       (_In_ LPCWSTR lpwszFileName);
-        static BOOL     IsDynamicLockEnabled(VOID);
-        static BOOL     SetDynamicLockEnabled(_In_ BOOL bEnabled);
+        static HICON    LoadIcon                (_In_ LPCWSTR lpwszFileName);
+        static HICON    LoadPngAsIcon           (_In_ LPCWSTR lpwszFileName);
+        static BOOL     IsDynamicLockEnabled    (VOID);
+        static BOOL     SetDynamicLockEnabled   (_In_ BOOL bEnabled);
+        static BOOL     GetWindowsVersion       (_Inout_ POSVERSIONINFOEXW pOSVIX);
     };
 
 ///////////////////////////////////////////////////////////////////////////////

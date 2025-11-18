@@ -619,6 +619,46 @@ namespace winrt::wakey::implementation
 
     ///////////////////////////////////////////////////////////////////////////////
 
+    BOOL Misc::GetWindowsVersion(
+        _Inout_ POSVERSIONINFOEXW pOSVIX
+    )
+    {
+
+        if (!pOSVIX)
+        {
+            SetLastError(ERROR_INVALID_PARAMETER);
+            return FALSE;
+        }
+
+        HMODULE hNtdll = GetModuleHandle(L"ntdll.dll");
+        if (hNtdll)
+        {
+            typedef NTSTATUS(WINAPI* LPRTLGETVERSION)(PRTL_OSVERSIONINFOEXW);
+
+            LPRTLGETVERSION pRtlGetVersion =
+                (LPRTLGETVERSION)GetProcAddress(hNtdll, "RtlGetVersion");
+
+            if (pRtlGetVersion)
+            {
+                pOSVIX->dwOSVersionInfoSize = sizeof(RTL_OSVERSIONINFOEXW);
+                SecureZeroMemory(
+                    &pOSVIX->dwMajorVersion,
+                    sizeof(RTL_OSVERSIONINFOEXW) - sizeof(pOSVIX->dwOSVersionInfoSize)
+                );
+
+                return pRtlGetVersion(pOSVIX) == ERROR_SUCCESS;
+
+                // Note: FreeLibrary is generally not necessary for ntdll.dll as it's
+                // loaded into every process and remains in memory for the lifetime
+                // of the application.
+            }
+        }
+
+        return FALSE;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+
     winrt::Microsoft::UI::Xaml::ApplicationTheme Theme::GetSystemDefault(VOID)
     {
         DWORD dwValue = Registry::GetValueHKCU_DWORD(
