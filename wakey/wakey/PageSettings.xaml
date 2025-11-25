@@ -28,22 +28,6 @@
                             </angel:SettingsCard.HeaderIcon>
                             <ToggleSwitch OffContent="Off" OnContent="On" MinHeight="0" MinWidth="0" x:Name="tglKeepScreenOn" Toggled="tglKeepScreenOnToggled"></ToggleSwitch>
                         </angel:SettingsCard>
-                        <angel:SettingsCard x:Uid="resSettingsGenTimeStc" Header="X" Description="X" x:Name="stcTimeInterval" IsEnabled="False">
-                            <angel:SettingsCard.HeaderIcon>
-                                <FontIcon Glyph="&#xEC92;"/>
-                            </angel:SettingsCard.HeaderIcon>                            
-                            <ComboBox x:Name="cboTimeInterval" SelectedIndex="0" MinWidth="100" SelectionChanged="cboTimeIntervalSelChanged">
-                                <x:String>None</x:String>
-                                <x:String>1 hour</x:String>
-                                <x:String>2 hours</x:String>
-                                <x:String>3 hours</x:String>
-                                <x:String>4 hours</x:String>
-                                <x:String>5 hours</x:String>
-                                <x:String>6 hours</x:String>
-                                <x:String>7 hours</x:String>
-                                <x:String>8 hours</x:String>
-                            </ComboBox>
-                        </angel:SettingsCard>
                     </StackPanel>
                 </angel:SettingsExpander.ExpanderContent>
             </angel:SettingsExpander>

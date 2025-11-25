@@ -14,18 +14,14 @@ namespace winrt::wakey::implementation
     ///////////////////////////////////////////////////////////////////////////////
 
     KeepAwake::KeepAwake(
-        _In_ winrt::Microsoft::UI::Xaml::Window window,
-        _In_ UINT uMsgTimeOut
+        _In_ winrt::Microsoft::UI::Xaml::Window window
     )
         : m_hThread    (NULL)
         , m_hWnd       (Wnd::GetHwnd(window))
         , m_hReload    (NULL)
-        , m_llTimeOut  (0)
         , m_bFirst     (FALSE)
-        , m_uMsgTimeOut(uMsgTimeOut)
     {
         WINRT_ASSERT(m_hWnd);
-        WINRT_ASSERT(m_uMsgTimeOut);
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -45,19 +41,7 @@ namespace winrt::wakey::implementation
         wstrNotification += L" ";
         if (bKeepAwake)
         {
-            int32_t iTimeInterval =
-                Settings::Get(Settings::SettingType::TimeInterval, 0);
-            
             wstrNotification += resLoader.GetString(L"resStatusUpdateIsActive");
-            if (iTimeInterval != 0)
-            {
-                wstrNotification += L" ";
-                wstrNotification += resLoader.GetString(L"resStatusUpdateFor");
-                wstrNotification += L" ";
-                wstrNotification += std::to_wstring(iTimeInterval);
-                wstrNotification += L" ";
-                wstrNotification += resLoader.GetString(L"resStatusUpdateHours");                
-            }
             wstrNotification += L" ";
             wstrNotification += resLoader.GetString(L"resStatusUpdateRunning");
         }
@@ -91,7 +75,6 @@ namespace winrt::wakey::implementation
 
         bool bKeepAwake    = false;
         bool bKeepScreenOn = false;
-        int32_t iTimeInterval = 0;
         bool bRunOnBattery = false;
         bool bRunOnBatSaver = false;
 
@@ -101,16 +84,10 @@ namespace winrt::wakey::implementation
             return (DWORD)-1;
 
         HANDLE hTimerDelay   = CreateWaitableTimer(NULL, FALSE, NULL);
-        HANDLE hTimerTimeOut = CreateWaitableTimer(NULL, FALSE, NULL);
-
         WINRT_ASSERT(hTimerDelay);
-        WINRT_ASSERT(hTimerTimeOut);
-
+        
         LARGE_INTEGER liDueTime;
         liDueTime.QuadPart = -50000000LL;
-
-        LARGE_INTEGER liWaitTimeOut;
-        liWaitTimeOut.QuadPart = 0;
 
         BOOL bWait  = FALSE;
         BOOL bBreak = FALSE;
@@ -119,7 +96,7 @@ namespace winrt::wakey::implementation
         BOOL bEnergySaver = FALSE;
 
         HANDLE aWait[] = { 
-            pThis->m_hReload, hTimerDelay, hTimerTimeOut
+            pThis->m_hReload, hTimerDelay
         };
 
         do
@@ -133,27 +110,11 @@ namespace winrt::wakey::implementation
             {
                 bKeepScreenOn =
                     Settings::Get(Settings::SettingType::KeepScreenOn, false);
-                iTimeInterval =
-                    Settings::Get(Settings::SettingType::TimeInterval, 0);
                 bRunOnBattery =
                     Settings::Get(Settings::SettingType::BatteryPower, false);
                 bRunOnBatSaver =
                     Settings::Get(Settings::SettingType::BatterySaver, false);
                                         
-                SecureZeroMemory(&liWaitTimeOut, sizeof(liWaitTimeOut));
-                if(iTimeInterval)
-                {
-                    liWaitTimeOut.QuadPart = iTimeInterval;
-                #ifndef _DEBUG
-                    liWaitTimeOut.QuadPart *= (60 * 60 * -10000000LL);
-                #else
-                    liWaitTimeOut.QuadPart *= -10000000LL;
-                #endif
-                    ::SetWaitableTimer(
-                        hTimerTimeOut, &liWaitTimeOut, 0, NULL, NULL, 0
-                    );
-                }
-
                 SecureZeroMemory(&sps, sizeof(sps));
                 ::GetSystemPowerStatus(&sps);
 
@@ -199,25 +160,6 @@ namespace winrt::wakey::implementation
                 else if (dwWait == WAIT_OBJECT_0 + 1)
                 {
                     bWait = TRUE;
-                    pThis->StatusUpdate();
-                }
-                else if (dwWait == WAIT_OBJECT_0 + 2)
-                {
-                    bWait = TRUE;
-                    pThis->m_llTimeOut = 0;
-
-                    Settings::Set(Settings::SettingType::KeepAwake,    false);
-                    Settings::Set(Settings::SettingType::KeepScreenOn, false);
-                    Settings::Set(Settings::SettingType::TimeInterval, 0);
-                    Settings::Set(Settings::SettingType::BatteryPower, false);
-                    Settings::Set(Settings::SettingType::BatterySaver, false);
-                    Settings::Set(Settings::SettingType::PowerOverlay, false);
-                    Settings::Set(Settings::SettingType::Bluetooth,    false);
-
-                    SendMessage(
-                        pThis->m_hWnd, pThis->m_uMsgTimeOut, 0, 0
-                    );
-
                     pThis->StatusUpdate();
                 }
                 else

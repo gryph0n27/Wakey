@@ -86,15 +86,9 @@ namespace winrt::wakey::implementation
 
             stcKeepScreenOn ().IsEnabled(bKeepAwake);
             stcPowerMode    ().IsEnabled(bKeepAwake);
-            stcTimeInterval ().IsEnabled(bKeepAwake);
             stcBatteryPower ().IsEnabled(bKeepAwake);
             stcPowerSettings().IsEnabled(bKeepAwake);
             
-            cboTimeInterval ().SelectedIndex(0);
-            Settings::Set(
-                Settings::SettingType::TimeInterval, 0
-            );
-
             if (bKeepAwake)
             {
                 tglKeepScreenOn().IsOn(
@@ -179,16 +173,10 @@ namespace winrt::wakey::implementation
 
             stcKeepScreenOn().IsEnabled(bEnabled);
             stcPowerMode   ().IsEnabled(bEnabled);
-            stcTimeInterval().IsEnabled(bEnabled);
             stcBatteryPower().IsEnabled(bEnabled);
             //stcBatterySaver().IsEnabled(bEnabled);
             stcPowerSettings().IsEnabled(bEnabled);
 
-            cboTimeInterval().SelectedIndex(0);
-            Settings::Set(
-                Settings::SettingType::TimeInterval, 0
-            );
-            
             if (bEnabled)
             {
                 tglKeepScreenOn().IsOn(
@@ -299,28 +287,6 @@ namespace winrt::wakey::implementation
     }
 
     ///////////////////////////////////////////////////////////////////////////////
-
-    VOID PageSettings::cboTimeIntervalSelChanged(
-        _In_::winrt::Windows::Foundation::IInspectable const& sender,
-        _In_::winrt::Microsoft::UI::Xaml::Controls::SelectionChangedEventArgs const& args
-    )
-    {
-        UNREFERENCED_PARAMETER(sender);
-        UNREFERENCED_PARAMETER(args);
-
-        if (!m_bLoading)
-        {
-            Settings::Set(
-                Settings::SettingType::TimeInterval,
-                cboTimeInterval().SelectedIndex()
-            );
-
-            if (MainWindow::Get()->m_keepAwake)
-                MainWindow::Get()->m_keepAwake->Reload();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////
         
     VOID PageSettings::tglBatteryPowerOnToggled(
         _In_::winrt::Windows::Foundation::IInspectable const& sender,
@@ -399,14 +365,6 @@ namespace winrt::wakey::implementation
             args.ClickedItem().try_as<Mntone::AngelUmbrella::Controls::SettingsPanel>();
 
         MainWindow::Get()->GoToPage(sp.Name(), false, true);
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////
-
-    VOID PageSettings::TimeIntervalFinished(VOID)
-    {
-        if (!m_bLoading)
-            tglEnableWakey().IsOn(false);
     }
 
     ///////////////////////////////////////////////////////////////////////////////

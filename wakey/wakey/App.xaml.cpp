@@ -170,13 +170,6 @@ namespace winrt::wakey::implementation
             }
         }
 
-        // TODO:
-        {
-            Settings::Set(
-                Settings::SettingType::TimeInterval, 0
-            );           
-        }
-
         window = winrt::make<MainWindow>(bRestart);
         if (bActivateWnd)
             Wnd::Activate(window);

@@ -18,12 +18,9 @@ namespace winrt::wakey::implementation
         VOID tglKeepScreenOnToggled     (_In_ ::winrt::Windows::Foundation::IInspectable const& sender, _In_ ::winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args);
         VOID tglPowerModeOnToggled      (_In_ ::winrt::Windows::Foundation::IInspectable const& sender, _In_ ::winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args);
         VOID btnPowerSettingsClick      (_In_ ::winrt::Windows::Foundation::IInspectable const& sender, _In_ ::winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args);
-        VOID cboTimeIntervalSelChanged  (_In_ ::winrt::Windows::Foundation::IInspectable const& sender, _In_ ::winrt::Microsoft::UI::Xaml::Controls::SelectionChangedEventArgs const& args);
         VOID tglBatteryPowerOnToggled   (_In_ ::winrt::Windows::Foundation::IInspectable const& sender, _In_ ::winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args);
         VOID tglBatterySaverOnToggled   (_In_ ::winrt::Windows::Foundation::IInspectable const& sender, _In_ ::winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args);
         VOID listViewItemClick          (_In_::winrt::Windows::Foundation::IInspectable const& sender, _In_::winrt::Microsoft::UI::Xaml::Controls::ItemClickEventArgs const& args);
-
-        VOID TimeIntervalFinished       (VOID);
     };
 }
 

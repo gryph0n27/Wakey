@@ -25,7 +25,6 @@ namespace winrt::wakey::implementation
     ///////////////////////////////////////////////////////////////////////////////
 
     WNDPROC     MainWindow::s_pfnWndProcNext = NULL;    
-    UINT        MainWindow::s_uTOT           = ::RegisterWindowMessageW(L"TimeOut");
     UINT        MainWindow::s_uTBC           = 0;
     MainWindow* MainWindow::s_pThis          = nullptr;
 
@@ -48,7 +47,7 @@ namespace winrt::wakey::implementation
         ::winrt::Microsoft::UI::Xaml::Window window =
             this->try_as<::winrt::Microsoft::UI::Xaml::Window>();
 
-        m_keepAwake = winrt::make_self<KeepAwake>(window, s_uTOT);
+        m_keepAwake = winrt::make_self<KeepAwake>(window);
         m_keepAwake->Start(!bRestart);
 
         m_powerSettings = winrt::make_self<PowerSettings>(window);
@@ -347,20 +346,7 @@ namespace winrt::wakey::implementation
 
             return FALSE;
         }
-        else if (uMsg == s_uTOT)
-        {
-            if (s_pThis)
-            {
-                PageSettings pageSettings =
-                    s_pThis->GetCurrentPageAs<PageSettings>();
-
-                if (pageSettings)
-                    pageSettings.TimeIntervalFinished();
-            }
-
-            return FALSE;
-        }
-
+        
         switch (uMsg)
         {
         case WM_DPICHANGED:

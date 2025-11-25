@@ -8,12 +8,10 @@ namespace winrt::wakey::implementation
     {
         HANDLE      m_hThread;
         HANDLE      m_hReload;        
-        LONGLONG    m_llTimeOut;
         HWND        m_hWnd;
         BOOL        m_bFirst;
-        UINT        m_uMsgTimeOut;
 
-        KeepAwake(_In_ winrt::Microsoft::UI::Xaml::Window window, _In_ UINT uMsgTimeOut);
+        KeepAwake(_In_ winrt::Microsoft::UI::Xaml::Window window);
         
         VOID    Start       (_In_ BOOL bFirst);
         VOID    Reload      (VOID);

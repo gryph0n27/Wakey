@@ -396,12 +396,6 @@
   <data name="resSettingsGenScrStc.Header" xml:space="preserve">
     <value>Screen</value>
   </data>
-  <data name="resSettingsGenTimeStc.Description" xml:space="preserve">
-    <value>Keep awake for specified time interval</value>
-  </data>
-  <data name="resSettingsGenTimeStc.Header" xml:space="preserve">
-    <value>Time Interval</value>
-  </data>
   <data name="resSettingsHeaderStc.Description" xml:space="preserve">
     <value>Allow the application to keep your PC awake alongside with other options</value>
   </data>
@@ -434,12 +428,6 @@
   </data>
   <data name="resStatusUpdate" xml:space="preserve">
     <value>Status update</value>
-  </data>
-  <data name="resStatusUpdateFor" xml:space="preserve">
-    <value>for</value>
-  </data>
-  <data name="resStatusUpdateHours" xml:space="preserve">
-    <value>hours</value>
   </data>
   <data name="resStatusUpdateIsActive" xml:space="preserve">
     <value>is active</value>
