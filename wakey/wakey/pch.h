@@ -109,6 +109,7 @@ namespace winrt::wakey::implementation
             Purchased,
             PaneOpen,
             TimeInterval,
+            AllowPowerOverlayUpdate,
             PowerOverlay,
             PowerOverlayScheme,
             BatteryPower,

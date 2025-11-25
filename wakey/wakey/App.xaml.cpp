@@ -115,10 +115,7 @@ namespace winrt::wakey::implementation
         // Enable dark mode for popup menu:
         Theme::AllowDarkModeForApp();
 
-        BOOL bCancelUAC = FALSE;
-        BOOL bRestart   = FALSE;
-        BOOL bRunAsOnce = FALSE;
-
+        BOOL bRestart = FALSE;
         if (activationArgs.Kind() == winrt::Microsoft::Windows::AppLifecycle::ExtendedActivationKind::Launch)
         {
             ::winrt::Windows::ApplicationModel::Activation::ILaunchActivatedEventArgs launchArgs =
@@ -130,12 +127,8 @@ namespace winrt::wakey::implementation
                 if (argString.size())
                 {
                     LPWSTR pwszArgs = ::PathGetArgsW(argString.c_str());
-                    bRunAsOnce = !::StrCmpIW(pwszArgs, L"--runasonce");
-
-                    if (!bRunAsOnce && !::StrCmpIW(pwszArgs, L"--theme"))
-                    {
+                    if (!::StrCmpIW(pwszArgs, L"--theme"))
                         bRestart = TRUE;
-                    }
                 }
             }
         }
@@ -152,6 +145,31 @@ namespace winrt::wakey::implementation
             );
         }
        
+        OSVERSIONINFOEX osvix = { 0 };
+        if (Misc::GetWindowsVersion(&osvix))
+        {
+            // Starting with Windows 11 build 27686.1000 (Canary) and build
+            // 26100.1876 (RP), Microsoft is beginning to roll out improve-
+            // ments to Settings > System > Power & battery including the 
+            // ability to set your Power Mode for both when your PC is 
+            // plugged in when it’s on battery along with a few other UI
+            // improvements to the page.
+
+            if (osvix.dwMajorVersion < 10 ||
+               (osvix.dwMajorVersion == 10 &&
+                osvix.dwBuildNumber < 26100))
+            {
+                Settings::Set(
+                    Settings::SettingType::AllowPowerOverlayUpdate, true
+                );
+            }
+            else
+            {
+                if (Settings::Get(Settings::SettingType::PowerOverlay, false))
+                    Settings::Set(Settings::SettingType::PowerOverlay, false);
+            }
+        }
+
         // TODO:
         {
             Settings::Set(

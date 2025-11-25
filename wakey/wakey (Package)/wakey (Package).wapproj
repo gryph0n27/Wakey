@@ -106,8 +106,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="wakey %28Package%29_TemporaryKey.pfx" />
-    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Images\BadgeLogo.scale-100.png" />
     <Content Include="Images\BadgeLogo.scale-125.png" />
     <Content Include="Images\BadgeLogo.scale-150.png" />

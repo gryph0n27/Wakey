@@ -171,6 +171,7 @@ namespace winrt::wakey::implementation
             L"Purcahsed",
             L"PaneOpen",
             L"TimeInterval",
+            L"AllowPowerOverlayUpdate",
             L"PowerOverlay",
             L"PowerOverlayScheme",
             L"BatteryPower",
@@ -601,7 +602,7 @@ namespace winrt::wakey::implementation
         _Inout_ POSVERSIONINFOEXW pOSVIX
     )
     {
-
+        WINRT_ASSERT(pOSVIX);
         if (!pOSVIX)
         {
             SetLastError(ERROR_INVALID_PARAMETER);
