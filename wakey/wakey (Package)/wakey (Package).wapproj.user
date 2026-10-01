@@ -3,7 +3,7 @@
   <PropertyGroup>
     <UapAppxPackageBuildMode>SideloadOnly</UapAppxPackageBuildMode>
     <AppxShowAllApps>True</AppxShowAllApps>
-    <AppxBuildConfigurationSelection>x86|x64|arm64</AppxBuildConfigurationSelection>
+    <AppxBuildConfigurationSelection>arm64</AppxBuildConfigurationSelection>
     <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_MsStore|x64'">

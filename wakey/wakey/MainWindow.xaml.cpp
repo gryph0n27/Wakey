@@ -430,8 +430,8 @@ namespace winrt::wakey::implementation
         case WM_SYSCOMMAND:
             if (wParam == SC_CLOSE)
             {
-                if (Settings::Get(Settings::SideLoaded, false) ||
-                    Settings::Get(Settings::SettingType::Purchased, false))
+                //if (Settings::Get(Settings::SideLoaded, false) ||
+                //    Settings::Get(Settings::SettingType::Purchased, false))
                 {
                     WINRT_ASSERT(s_pThis->m_hSemaphore);
                     DWORD dwWait = WaitForMultipleObjectsEx(
@@ -446,9 +446,9 @@ namespace winrt::wakey::implementation
                         );
                     }
                 }
-                else
+                //else
                 {
-                    s_pThis->PurchaseDialog();
+                    //s_pThis->PurchaseDialog();
                 }
 
                 return FALSE;

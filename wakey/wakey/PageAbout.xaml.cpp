@@ -60,8 +60,8 @@ namespace winrt::wakey::implementation
         );
         txtAppDesc().Text(wszAppDesc);
 
-        if(Settings::Get(Settings::SettingType::Purchased, false))
-            ascPro().IsEnabled(false);
+        //if(Settings::Get(Settings::SettingType::Purchased, false))
+        //  ascPro().IsEnabled(false);
 
 
         //prgPurchase().IsActive(s_bPurchaseInProgress);
@@ -95,12 +95,13 @@ namespace winrt::wakey::implementation
         UNREFERENCED_PARAMETER(sender);
         UNREFERENCED_PARAMETER(args);
         
+        /*
         if (Settings::Get(Settings::SideLoaded, false))
         {
             co_await ShowStoreDialog(__FUNCTIONW__);
             co_return;
         }
-
+        */
         //winrt::apartment_context ui_thread;
 
         MainWindow* pMainWnd = MainWindow::Get();
@@ -132,13 +133,13 @@ namespace winrt::wakey::implementation
     {
         UNREFERENCED_PARAMETER(sender);
         UNREFERENCED_PARAMETER(args);
-
+        /*
         if (Settings::Get(Settings::SideLoaded, false))
         {
             co_await ShowStoreDialog(__FUNCTIONW__);
             co_return;
         }
-
+        */
         MainWindow* pMainWnd = MainWindow::Get();
         if (pMainWnd->m_msStore)
         {
@@ -164,7 +165,7 @@ namespace winrt::wakey::implementation
     }
 
     ///////////////////////////////////////////////////////////////////////////////
-
+    /*
     winrt::fire_and_forget PageAbout::btnProClick(
         _In_::winrt::Windows::Foundation::IInspectable const& sender,
         _In_::winrt::Microsoft::UI::Xaml::RoutedEventArgs const& args
@@ -202,9 +203,9 @@ namespace winrt::wakey::implementation
             co_await ShowSimpleDialog(hstrMessage, __FUNCTIONW__);
         }
     }
-
+    */
     ///////////////////////////////////////////////////////////////////////////////
-
+    /*
     winrt::Windows::Foundation::IAsyncAction
         PageAbout::ShowStoreDialog(
             _In_ winrt::hstring hstrFunction
@@ -213,7 +214,7 @@ namespace winrt::wakey::implementation
         winrt::Microsoft::Windows::ApplicationModel::Resources::ResourceLoader resLoader;
         co_await ShowSimpleDialog(resLoader.GetString(L"resPurchaseFromMsStoreMsg"), hstrFunction);
     }
-
+    */
     ///////////////////////////////////////////////////////////////////////////////
 
     winrt::Windows::Foundation::IAsyncAction

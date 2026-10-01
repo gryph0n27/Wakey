@@ -50,7 +50,7 @@
                     <Button x:Uid="resAboutRateBtn" Content="X" MinWidth="100" x:Name="btnRate" Click="btnRateClick"></Button>
                 </StackPanel>
             </angel:SettingsCard>
-            <angel:SettingsCard Margin="10, 0, 10, 0" x:Uid="resAboutPurchaseStc" Header="X" x:Name="ascPro" Description="X">
+            <!--angel:SettingsCard Margin="10, 0, 10, 0" x:Uid="resAboutPurchaseStc" Header="X" x:Name="ascPro" Description="X">
                 <angel:SettingsCard.HeaderIcon>
                     <FontIcon Glyph="&#xE8EC;"/>
                 </angel:SettingsCard.HeaderIcon>
@@ -58,7 +58,7 @@
                     <ProgressRing IsActive="False" Margin="0, 0, 10, 0" x:Name="prgPurchase"/>
                     <Button x:Uid="resAboutPurchaseBtn" Content="X" MinWidth="100" Style="{StaticResource AccentButtonStyle}" x:Name="btnPro" Click="btnProClick"></Button>
                 </StackPanel>
-            </angel:SettingsCard>
+            </angel:SettingsCard-->
         </StackPanel>
     </ScrollViewer>
 </Page>
