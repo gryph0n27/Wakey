@@ -1,8 +1,0 @@
-namespace wakey
-{
-    [default_interface]
-    runtimeclass PageBluetooth : Microsoft.UI.Xaml.Controls.Page
-    {
-        PageBluetooth(void);
-    }
-}

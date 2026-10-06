@@ -7,7 +7,6 @@
     <Page Include="MainWindow.xaml" />
     <Page Include="PageSettings.xaml" />
     <Page Include="PageAbout.xaml" />
-    <Page Include="PageBluetooth.xaml" />
     <Page Include="CustomDialog.xaml">
       <Filter>Custom</Filter>
     </Page>
@@ -65,5 +64,9 @@
     <PRIResource Include="Resources.resw">
       <Filter>Strings\en-US</Filter>
     </PRIResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natstepfilter" />
   </ItemGroup>
 </Project>

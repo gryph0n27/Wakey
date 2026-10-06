@@ -135,10 +135,6 @@
       <DependentUpon>PageAbout.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
-    <ClInclude Include="PageBluetooth.xaml.h">
-      <DependentUpon>PageBluetooth.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </ClInclude>
     <ClInclude Include="PageGeneral.xaml.h">
       <DependentUpon>PageGeneral.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -168,9 +164,6 @@
     <Page Include="PageAbout.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PageBluetooth.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="PageGeneral.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -197,10 +190,6 @@
     </ClCompile>
     <ClCompile Include="PageAbout.xaml.cpp">
       <DependentUpon>PageAbout.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </ClCompile>
-    <ClCompile Include="PageBluetooth.xaml.cpp">
-      <DependentUpon>PageBluetooth.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="PageGeneral.xaml.cpp">
@@ -252,10 +241,6 @@
     </Midl>
     <Midl Include="PageAbout.idl">
       <DependentUpon>PageAbout.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Midl>
-    <Midl Include="PageBluetooth.idl">
-      <DependentUpon>PageBluetooth.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="PageGeneral.idl">

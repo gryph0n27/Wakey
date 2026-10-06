@@ -600,7 +600,6 @@ namespace winrt::wakey::implementation
         PAGENAVINFO pni[] = {
             { xaml_typename<PageGeneral  >(), 0, L"General",   FALSE },
             { xaml_typename<PageSettings >(), 1, L"Settings",  FALSE },
-            { xaml_typename<PageBluetooth>(), 2, L"Bluetooth", FALSE },
             { xaml_typename<PageAbout    >(), 0, L"About",     TRUE  },
         };
 

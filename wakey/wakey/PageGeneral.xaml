@@ -74,13 +74,6 @@
                         </angel:SettingsPanel.HeaderIcon>
                     </angel:SettingsPanel>
                 </ListViewItem>
-                <ListViewItem>
-                    <angel:SettingsPanel x:Name="Bluetooth" x:Uid="resNavBluetoothStp" Header="X" Description="X">
-                        <angel:SettingsPanel.HeaderIcon>
-                            <FontIcon Glyph="&#xE702;" />
-                        </angel:SettingsPanel.HeaderIcon>
-                    </angel:SettingsPanel>
-                </ListViewItem>
             </ListView>
         </StackPanel>
     </ScrollViewer>
