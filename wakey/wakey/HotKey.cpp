@@ -13,23 +13,79 @@ using namespace winrt;
 
 namespace winrt::wakey::implementation
 {
+    using ::winrt::Windows::System::VirtualKey;
+
     ///////////////////////////////////////////////////////////////////////////////
 
     HotKey::HotKey(_In_::winrt::Microsoft::UI::Xaml::Window const& window)
           : m_window(window)
-    {   
-        m_keySeq =
-            winrt::single_threaded_map<
-                winrt::Windows::System::VirtualKey, winrt::hstring
-            >();
+    {
     }
 
     ///////////////////////////////////////////////////////////////////////////////
 
     void HotKey::Close(void)
     {
-        m_keySeq.Clear();
         UnRegister();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+
+    bool HotKey::IsKeyDown(
+        _In_ VirtualKey key
+    )
+    {
+        winrt::Windows::UI::Core::CoreVirtualKeyStates keyState =
+            winrt::Microsoft::UI::Input::InputKeyboardSource::GetKeyStateForCurrentThread(key);
+
+        uint32_t keyDown =
+            (uint32_t)winrt::Windows::UI::Core::CoreVirtualKeyStates::Down;
+
+        return ((uint32_t)keyState & keyDown) == keyDown;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+
+    UINT HotKey::GetModifiers(void)
+    {
+        UINT uKeyMod = 0;
+
+        if (IsKeyDown(VirtualKey::Control))
+            uKeyMod |= MOD_CONTROL;
+        if (IsKeyDown(VirtualKey::Shift))
+            uKeyMod |= MOD_SHIFT;
+        if (IsKeyDown(VirtualKey::Menu))
+            uKeyMod |= MOD_ALT;
+        if (IsKeyDown(VirtualKey::LeftWindows) ||
+            IsKeyDown(VirtualKey::RightWindows))
+            uKeyMod |= MOD_WIN;
+
+        return uKeyMod;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+
+    std::wstring HotKey::Format(
+        _In_ UINT uHotKeyMod,
+        _In_ UINT uHotKey
+    )
+    {
+        std::wstring wstrKey;
+
+        if (uHotKeyMod & MOD_CONTROL)
+            wstrKey += L"Ctrl + ";
+        if (uHotKeyMod & MOD_SHIFT)
+            wstrKey += L"Shift + ";
+        if (uHotKeyMod & MOD_ALT)
+            wstrKey += L"Alt + ";
+        if (uHotKeyMod & MOD_WIN)
+            wstrKey += L"Win + ";
+
+        if (uHotKey >= (UINT)VirtualKey::A &&
+            uHotKey <= (UINT)VirtualKey::Z)
+            wstrKey += (wchar_t)uHotKey;
+
+        return wstrKey;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -40,29 +96,18 @@ namespace winrt::wakey::implementation
     {
         UINT uHotKey = Settings::Get(
             Settings::HotKey,
-            (int32_t)winrt::Windows::System::VirtualKey::W
+            (int32_t)VirtualKey::W
         );
-        
+
         UINT uHotKeyMod = Settings::Get(
             Settings::HotKeyMod,
             (int32_t)(MOD_SHIFT | MOD_CONTROL)
         );
 
         if (uHotKeyMod > 0 && uHotKey > 0)
-        {
-            std::wstring wstrKey;
-            if (uHotKeyMod & MOD_SHIFT)
-                wstrKey += L"Shift + ";
-            if (uHotKeyMod & MOD_CONTROL)
-                wstrKey += L"Ctrl + ";
-            if (uHotKeyMod & MOD_ALT)
-                wstrKey += L"Alt + ";
-            if (uHotKeyMod & MOD_WIN)
-                wstrKey += L"Win + ";
-
-            wstrKey += (wchar_t)MapVirtualKeyW(uHotKey, MAPVK_VK_TO_CHAR);
-            txt.Text(wstrKey);
-        }
+            txt.Text(Format(uHotKeyMod, uHotKey));
+        else
+            txt.Text(L"");
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -71,7 +116,7 @@ namespace winrt::wakey::implementation
     {
         UINT uHotKey = Settings::Get(
             Settings::HotKey,
-            (int32_t)winrt::Windows::System::VirtualKey::W
+            (int32_t)VirtualKey::W
         );
 
         UINT uHotKeyMod = Settings::Get(
@@ -79,16 +124,17 @@ namespace winrt::wakey::implementation
             (int32_t)(MOD_SHIFT | MOD_CONTROL)
         );
 
+        UnRegister();
+
         if (uHotKey &&
             uHotKeyMod)
         {
-            UnRegister();
             return ::RegisterHotKey(
-                Wnd::GetHwnd(m_window), HOTKEY_ID, uHotKeyMod, uHotKey
+                Wnd::GetHwnd(m_window), HOTKEY_ID, uHotKeyMod | MOD_NOREPEAT, uHotKey
             );
         }
 
-        return FALSE;
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -101,161 +147,80 @@ namespace winrt::wakey::implementation
     }
 
     ///////////////////////////////////////////////////////////////////////////////
+    // Returns false if the new key combination could not be registered
+    // (e.g. it is already taken by another application).
 
-    void HotKey::ScanPreviewKeyDown(
-        _In_ winrt::Windows::System::VirtualKey key,
-        _In_::winrt::Microsoft::UI::Xaml::Controls::TextBox const& txt
+    bool HotKey::ScanKeyDown(
+        _In_ VirtualKey key,
+        _In_ ::winrt::Microsoft::UI::Xaml::Controls::TextBox const& txt
     )
     {
-        if (key == winrt::Windows::System::VirtualKey::Tab)
-            return;
+        if (key == VirtualKey::Tab)
+            return true;
 
         if (txt.FocusState() == ::winrt::Microsoft::UI::Xaml::FocusState::Unfocused)
-            return;
+            return true;
 
-        txt.Text(L"");
+        UINT uKeyMod = GetModifiers();
 
-        ScanModKey(winrt::Windows::System::VirtualKey::Shift,        L"Shift");
-        ScanModKey(winrt::Windows::System::VirtualKey::Control,      L"Ctrl");
-        ScanModKey(winrt::Windows::System::VirtualKey::Menu,         L"Alt");
-        ScanModKey(winrt::Windows::System::VirtualKey::RightWindows, L"Win");
-        ScanModKey(winrt::Windows::System::VirtualKey::LeftWindows,  L"Win");
-
-        if (m_keySeq.Size() > 0)
+        // Backspace / Delete without modifiers clears the hotkey
+        if (uKeyMod == 0 &&
+            (key == VirtualKey::Back || key == VirtualKey::Delete))
         {
-            std::wstring wstrKeySeq;
-            UINT uKeyMod = 0;
-            bool bClear = false;
+            Settings::Set(Settings::HotKey,    (int32_t)0);
+            Settings::Set(Settings::HotKeyMod, (int32_t)0);
+            UnRegister();
+            txt.Text(L"");
+            return true;
+        }
 
-            ScanKeyDown(key);
+        if (key >= VirtualKey::A &&
+            key <= VirtualKey::Z &&
+            uKeyMod != 0)
+        {
+            int32_t iOldKey = Settings::Get(Settings::HotKey,    (int32_t)VirtualKey::W);
+            int32_t iOldMod = Settings::Get(Settings::HotKeyMod, (int32_t)(MOD_SHIFT | MOD_CONTROL));
 
-            for (winrt::Windows::Foundation::Collections::IKeyValuePair<winrt::Windows::System::VirtualKey, winrt::hstring> it : m_keySeq)
+            Settings::Set(Settings::HotKey,    (int32_t)key);
+            Settings::Set(Settings::HotKeyMod, (int32_t)uKeyMod);
+
+            if (Register())
             {
-                if (!wstrKeySeq.empty())
-                    wstrKeySeq += L" + ";
-
-                wstrKeySeq += it.Value();
-                switch (it.Key())
-                {
-                case winrt::Windows::System::VirtualKey::Shift:
-                    uKeyMod |= MOD_SHIFT;
-                    break;
-                case winrt::Windows::System::VirtualKey::Control:
-                    uKeyMod |= MOD_CONTROL;
-                    break;
-                case winrt::Windows::System::VirtualKey::Menu:
-                    uKeyMod |= MOD_ALT;
-                    break;
-                case winrt::Windows::System::VirtualKey::LeftWindows:
-                case winrt::Windows::System::VirtualKey::RightWindows:
-                    uKeyMod |= MOD_WIN;
-                    break;
-                default:
-                {
-                    if (it.Key() >= winrt::Windows::System::VirtualKey::A &&
-                        it.Key() <= winrt::Windows::System::VirtualKey::Z)
-                    {
-                        txt.Text(wstrKeySeq);
-
-                        Settings::Set(
-                            Settings::HotKey,
-                            (int32_t)MapVirtualKeyW((UINT)it.Key(), MAPVK_VK_TO_CHAR)
-                        );
-                        Settings::Set(
-                            Settings::HotKeyMod, (int32_t)uKeyMod
-                        );
-
-                        Register();
-                        bClear = true;
-                    }
-                }
-                break;
-                }
+                txt.Text(Format(uKeyMod, (UINT)key));
+                return true;
             }
 
-            //if (bClear)
-            //    m_keySeq.Clear();
+            // Registration failed, revert to the previous combination
+            Settings::Set(Settings::HotKey,    iOldKey);
+            Settings::Set(Settings::HotKeyMod, iOldMod);
+            Register();
+            Restore(txt);
+            return false;
         }
+
+        // Show modifiers being held as a preview, e.g. "Ctrl + Shift + "
+        if (uKeyMod != 0)
+            txt.Text(Format(uKeyMod, 0));
+
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
-
-    void HotKey::ScanModKey(
-        _In_ winrt::Windows::System::VirtualKey key,
-        _In_ winrt::hstring value
-    )
-    {
-        winrt::Windows::UI::Core::CoreVirtualKeyStates keyState =
-            winrt::Microsoft::UI::Input::InputKeyboardSource::GetKeyStateForCurrentThread(key);
-
-        uint32_t keyDown =
-            (uint32_t)winrt::Windows::UI::Core::CoreVirtualKeyStates::Down;
-
-        if (((uint32_t)keyState & keyDown) == keyDown)
-        {
-            if (!m_keySeq.HasKey(key))
-                m_keySeq.Insert(key, value);
-        }
-        else if (m_keySeq.HasKey(key))
-            m_keySeq.Remove(key);
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////
-
-    void HotKey::ScanKeyDown(
-        _In_::winrt::Windows::System::VirtualKey key
-    )
-    {
-        if ((key >= winrt::Windows::System::VirtualKey::A   &&
-             key <= winrt::Windows::System::VirtualKey::Z ) &&
-            !m_keySeq.HasKey(key))
-        {
-            winrt::Windows::System::VirtualKey virtKey =
-                winrt::Windows::System::VirtualKey::None;
-
-            for (winrt::Windows::Foundation::Collections::IKeyValuePair<winrt::Windows::System::VirtualKey, winrt::hstring> it : m_keySeq)
-            {
-                switch (it.Key())
-                {
-                case winrt::Windows::System::VirtualKey::Shift:
-                case winrt::Windows::System::VirtualKey::Control:
-                case winrt::Windows::System::VirtualKey::Menu:
-                case winrt::Windows::System::VirtualKey::LeftWindows:
-                case winrt::Windows::System::VirtualKey::RightWindows:
-                    virtKey =
-                        winrt::Windows::System::VirtualKey::None;
-                    break;
-                default:
-                    virtKey = it.Key();
-                    break;
-                }
-            }
-
-            if (virtKey != winrt::Windows::System::VirtualKey::None)
-                m_keySeq.Remove(virtKey);
-
-            std::wstring wstrKeySeq;
-            wstrKeySeq += (wchar_t)MapVirtualKeyW((UINT)key, MAPVK_VK_TO_CHAR);
-
-            m_keySeq.Insert(key, wstrKeySeq);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////
+    // Once all modifiers are released without a letter, show the saved hotkey again
 
     void HotKey::ScanKeyUp(
-        _In_::winrt::Windows::System::VirtualKey key,
-        _In_::winrt::Microsoft::UI::Xaml::Controls::TextBox const& txt
+        _In_ VirtualKey key,
+        _In_ ::winrt::Microsoft::UI::Xaml::Controls::TextBox const& txt
     )
     {
-        if (key == winrt::Windows::System::VirtualKey::Tab)
+        if (key == VirtualKey::Tab)
             return;
 
         if (txt.FocusState() == ::winrt::Microsoft::UI::Xaml::FocusState::Unfocused)
             return;
 
-        if (m_keySeq.HasKey(key))
-            m_keySeq.Remove(key);
+        if (GetModifiers() == 0)
+            Restore(txt);
     }
 
     ///////////////////////////////////////////////////////////////////////////////

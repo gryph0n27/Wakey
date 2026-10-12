@@ -155,7 +155,14 @@ namespace winrt::wakey::implementation
     )
     {
         UNREFERENCED_PARAMETER(sender);
-        MainWindow::Get()->m_hotKey->ScanPreviewKeyDown(args.Key(), txtHotKey());
+        if (txtHotKey().FocusState() == ::winrt::Microsoft::UI::Xaml::FocusState::Unfocused ||
+            args.Key() == ::winrt::Windows::System::VirtualKey::Tab)
+            return;
+
+        infoBar().IsOpen(
+            !MainWindow::Get()->m_hotKey->ScanKeyDown(args.Key(), txtHotKey())
+        );
+        args.Handled(true);
     }
 
     ///////////////////////////////////////////////////////////////////////////////
